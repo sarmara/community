@@ -1,0 +1,75 @@
+<div class="setting" ng-controller="settingController">
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background:white">
+                <h3 class="panel-title">
+                    <i class="fa fa-cog"></i>
+                    <%=title%>
+                </h3>
+            </div>
+            <div class="panel-body clearfix">
+                <div class="userInfo">
+
+                    <form name="loginForm" novalidate>
+                        <div class="form-group">
+                            <label for="name">账号：</label>
+                            <span>
+                                <%=user.name%>
+                            </span>
+                        </div>
+                        <div class="form-grop">
+                            <label for="email">邮箱：</label>
+                            <span>
+                                <%=user.email%>
+                            </span>
+                        </div>
+                        <div class="form-grop">
+                            <label for="comments">个人签名：</label>
+                            <textarea name="comments" id="comments" class="form-control" cols="30" rows="10" placeholder="请输入个人签名" ng-model="comments"
+                                ng-init="comments='<%=user.comments%>'"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="setting()">保存</button>
+                    </form>
+                </div>
+                <div class="upload pull-right">
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+                    <form>
+                        <input type="hidden" id="userId" value="<%=user._id%>">
+                        <input type="hidden" id="userName" value="<%=user.name%>">
+                        <div id="queue"></div>
+                        <input id="file_upload" name="file_upload" type="file" multiple="true">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="/stylesheets/upload.css">
+<script src="/javascripts/upload.js"></script>
+<script>
+    $(function () {
+        $('#file_upload').uploadify({
+            auto: true,
+            swf: '/libs/uploadify/uploadify.swf',
+            uploader: '/users/jupload',
+            // Put your options here
+            buttonText: '<div>选择文件</div>',
+            formData: {
+                userId: $('#userId').val(),
+                userName: $('#userName').val(),
+            },
+            onUploadSuccess: function (file, data, res) {
+                console.log(file);
+                console.log(data);
+                console.log(res);
+                var img="<img src=\""+data+"\"/>";
+                $('#queue').append(img);
+            }
+        });
+    });
+
+</script>
